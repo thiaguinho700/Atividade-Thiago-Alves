@@ -58,13 +58,19 @@ exports.register = [
 ];
 
 
-router.get('/', async (req, res) => {
+// Rota para buscar livros pelo título
+router.get('/search', async (req, res) => {
+    const { title } = req.query;
+
     try {
-        const books = await Book.find();
+        const books = await Book.find({
+            title: { $regex: title, $options: 'i' } // 'i' torna a busca case-insensitive
+        });
+
         res.status(200).json(books);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Erro ao buscar os livros', error });
+        console.error('Erro ao buscar livros por título:', error);
+        res.status(500).json({ message: 'Erro ao buscar livros', error });
     }
 });
 
