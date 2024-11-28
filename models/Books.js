@@ -18,6 +18,9 @@ const BookSchema = new mongoose.Schema({
     year: {
         type: Number // O ano é opcional
     },
+    ISBN:{
+        type: String,
+    },
     image:{type:String},
 });
 

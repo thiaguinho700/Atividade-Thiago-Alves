@@ -30,15 +30,13 @@ const upload = multer({
 });
 
 router.post('/', upload.single("image"), async (req, res) => {
-
-    const { title, author, year } = req.body;
-
+    const { title, author, year, ISBN } = req.body;
     try {
-
         const newBook = new Book({
             title,
             author,
             year,
+            ISBN,
             image: req.file?.path
         });
         await newBook.save();
@@ -48,8 +46,6 @@ router.post('/', upload.single("image"), async (req, res) => {
         console.error('Erro ao cadastrar livro:', error);
         res.status(500).json({ message: 'Erro ao cadastrar livro', error });
     }
-
-
 });
 
 exports.register = [
@@ -96,7 +92,7 @@ router.get('/search', async (req, res) => {
     const { title } = req.query;
     try {
         const books = await Book.find({
-            title: { $regex: title, $options: 'i' } // 'i' torna a busca case-insensitive
+            title: { $regex: title, $options: 'i' } 
         });
         res.status(200).json(books);
     } catch (error) {
