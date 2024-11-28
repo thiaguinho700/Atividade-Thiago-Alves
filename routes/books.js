@@ -98,11 +98,6 @@ router.get('/search', async (req, res) => {
         const books = await Book.find({
             title: { $regex: title, $options: 'i' } // 'i' torna a busca case-insensitive
         });
-
-        if (books.toString() == "[]") {
-
-            res.status(400).json({ message: "Livro não encontrado" })
-        }
         res.status(200).json(books);
     } catch (error) {
         console.error('Erro ao buscar livros por título:', error);
